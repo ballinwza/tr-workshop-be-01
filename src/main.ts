@@ -6,6 +6,7 @@ import { GlobalExceptionFilter } from './common/utils/mongo-exception';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalFilters(new GlobalExceptionFilter());
+  app.enableCors();
   const config = new DocumentBuilder()
     .setTitle('Workshop Backend NestJs')
     .setDescription('NestJs REST api created by Tradon')
