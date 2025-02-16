@@ -5,6 +5,7 @@ import { join } from 'path';
 import { CommentModule } from './comment/comment.module';
 import mongooseConfig from './common/configs/mongoose.config';
 import { ConfigName } from './common/enums/configName.enum';
+import { PlacardModule } from './placard/placard.module';
 import { UserModule } from './user/user.module';
 
 @Global()
@@ -23,6 +24,7 @@ import { UserModule } from './user/user.module';
     }),
     UserModule,
     CommentModule,
+    PlacardModule,
   ],
   controllers: [],
   providers: [],
