@@ -6,9 +6,6 @@ export const UserSchemaName = 'users';
 export class UserEntity {
   _id: string;
 
-  // @Prop({ type: Types.ObjectId, required: true, ref: userSchemaName })
-  // userId: string;
-
   @Prop({ required: true })
   profileImageUrl: string;
 
@@ -19,4 +16,4 @@ export class UserEntity {
   email: string;
 }
 
-export const UserDetailEntitySchema = SchemaFactory.createForClass(UserEntity);
+export const UserEntitySchema = SchemaFactory.createForClass(UserEntity);

@@ -2,6 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { join } from 'path';
+import { CommentModule } from './comment/comment.module';
 import mongooseConfig from './common/configs/mongoose.config';
 import { ConfigName } from './common/enums/configName.enum';
 import { UserModule } from './user/user.module';
@@ -21,6 +22,7 @@ import { UserModule } from './user/user.module';
       }),
     }),
     UserModule,
+    CommentModule,
   ],
   controllers: [],
   providers: [],
