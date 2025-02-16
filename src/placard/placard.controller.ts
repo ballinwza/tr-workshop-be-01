@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PlacardDeleteReqDto } from './adapter/inbound/dto/deletePlacard.req.dto';
+import { PlacardResDto } from './adapter/inbound/dto/placard.res.dto';
 import { PlacardSaveReqDto } from './adapter/inbound/dto/savePlacard.req.dto';
-import { IPlacard } from './interface/domain/placard.domain';
 import { PlacardRepository } from './placard.repository';
 import { PlacardService } from './placard.service';
 
@@ -16,7 +16,16 @@ export class PlacardController {
   }
 
   @Post('/save')
-  @ApiResponse({ status: 200, description: 'Found placard.', type: IPlacard })
+  @ApiResponse({
+    status: 200,
+    description: 'Saved placard.',
+    schema: {
+      type: 'object',
+      properties: {
+        id: { type: 'string' },
+      },
+    },
+  })
   async placardSave(@Body() body: PlacardSaveReqDto): Promise<{ id: string }> {
     return await this.placardService.save(PlacardSaveReqDto.toDomain(body));
   }
@@ -24,17 +33,27 @@ export class PlacardController {
   @Get('/find-all')
   @ApiResponse({
     status: 200,
-    description: 'Found placard.',
-    type: [IPlacard],
+    description: 'Found placard list.',
+    isArray: true,
+    type: PlacardResDto,
   })
-  async placards(): Promise<IPlacard[]> {
-    return await this.placardService.find();
+  async placards(): Promise<PlacardResDto[]> {
+    return PlacardResDto.mappingListToDto(await this.placardService.find());
   }
 
   @Get('/find/:userId')
-  @ApiResponse({ status: 200, description: 'Found placard.', type: [IPlacard] })
-  async placardsByUserId(@Param('userId') userId: string): Promise<IPlacard[]> {
-    return await this.placardService.find(userId);
+  @ApiResponse({
+    status: 200,
+    description: 'Found placard list by userId.',
+    isArray: true,
+    type: PlacardResDto,
+  })
+  async placardsByUserId(
+    @Param('userId') userId: string,
+  ): Promise<PlacardResDto[]> {
+    return PlacardResDto.mappingListToDto(
+      await this.placardService.find(userId),
+    );
   }
 
   @Delete('/delete')
