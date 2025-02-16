@@ -4,6 +4,7 @@ import { PlacardEntity } from '../schema/placard.schema';
 
 export class PlacardEntityMapper {
   public static savePlacardEntity({
+    _id,
     description,
     userId,
     commentId,
@@ -11,6 +12,7 @@ export class PlacardEntityMapper {
     title,
   }: IPlacard): PlacardEntity {
     return Builder(PlacardEntity)
+      ._id(_id)
       .userId(userId)
       .commentId(commentId)
       .community(community)
@@ -35,5 +37,9 @@ export class PlacardEntityMapper {
       .title(title)
       .description(description)
       .build();
+  }
+
+  public static mappingListToDomain(entities: PlacardEntity[]): IPlacard[] {
+    return entities.map((entity) => this.mappingToDomain(entity));
   }
 }

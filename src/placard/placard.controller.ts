@@ -1,7 +1,8 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { PlacardSaveReqDto } from './adapter/inbound/dto/placard.req.dto';
-import { IPlacard } from './interface/domain/placard.domain';
+import { PlacardDeleteReqDto } from './adapter/inbound/dto/deletePlacard.req.dto';
+import { PlacardResDto } from './adapter/inbound/dto/placard.res.dto';
+import { PlacardSaveReqDto } from './adapter/inbound/dto/savePlacard.req.dto';
 import { PlacardRepository } from './placard.repository';
 import { PlacardService } from './placard.service';
 
@@ -14,9 +15,54 @@ export class PlacardController {
     this.placardService = new PlacardService(this.placardRepository);
   }
 
-  @Post('/create')
-  @ApiResponse({ status: 200, description: 'Found placard.', type: IPlacard })
-  async createPlacard(@Body() body: PlacardSaveReqDto): Promise<IPlacard> {
+  @Post('/save')
+  @ApiResponse({
+    status: 200,
+    description: 'Saved placard.',
+    schema: {
+      type: 'object',
+      properties: {
+        id: { type: 'string' },
+      },
+    },
+  })
+  async placardSave(@Body() body: PlacardSaveReqDto): Promise<{ id: string }> {
     return await this.placardService.save(PlacardSaveReqDto.toDomain(body));
+  }
+
+  @Get('/find-all')
+  @ApiResponse({
+    status: 200,
+    description: 'Found placard list.',
+    isArray: true,
+    type: PlacardResDto,
+  })
+  async placards(): Promise<PlacardResDto[]> {
+    return PlacardResDto.mappingListToDto(await this.placardService.find());
+  }
+
+  @Get('/find/:userId')
+  @ApiResponse({
+    status: 200,
+    description: 'Found placard list by userId.',
+    isArray: true,
+    type: PlacardResDto,
+  })
+  async placardsByUserId(
+    @Param('userId') userId: string,
+  ): Promise<PlacardResDto[]> {
+    return PlacardResDto.mappingListToDto(
+      await this.placardService.find(userId),
+    );
+  }
+
+  @Delete('/delete')
+  @ApiResponse({
+    status: 200,
+    description: 'Deleted placard.',
+    type: Boolean,
+  })
+  async placardDeleteById(@Body() body: PlacardDeleteReqDto): Promise<boolean> {
+    return await this.placardService.delete(body.id);
   }
 }

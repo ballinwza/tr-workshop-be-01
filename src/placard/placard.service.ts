@@ -5,8 +5,19 @@ import { IPlacardRepository } from './interface/repository/placard.repository.in
 export class PlacardService {
   constructor(private readonly placardRepository: IPlacardRepository) {}
 
-  async save(data: IPlacard): Promise<IPlacard> {
+  async save(data: IPlacard): Promise<{ id: string }> {
     const afterMapping = PlacardEntityMapper.savePlacardEntity(data);
-    return await this.placardRepository.savePlacard(afterMapping);
+    return await this.placardRepository.save(afterMapping);
+  }
+
+  async find(userId?: string): Promise<IPlacard[]> {
+    if (userId) {
+      return await this.placardRepository.getListByUserId(userId);
+    }
+    return await this.placardRepository.getList();
+  }
+
+  async delete(id: string): Promise<boolean> {
+    return await this.placardRepository.delete(id);
   }
 }
