@@ -1,8 +1,11 @@
 import { Body, Controller, Post } from '@nestjs/common';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CommentSaveReqDto } from './adapter/inbound/dto/comment.req.dto';
 import { CommentRepository } from './comment.repository';
 import { CommentService } from './comment.service';
+import { IComment } from './interface/domain/Comment.domain';
 
+@ApiTags('comment')
 @Controller('comment')
 export class CommentController {
   private commentService: CommentService;
@@ -12,7 +15,8 @@ export class CommentController {
   }
 
   @Post('/create')
-  async createComment(@Body() body: CommentSaveReqDto) {
+  @ApiResponse({ status: 200, description: 'Found comment.', type: IComment })
+  async createComment(@Body() body: CommentSaveReqDto): Promise<IComment> {
     return await this.commentService.save(CommentSaveReqDto.toDomain(body));
   }
 }
