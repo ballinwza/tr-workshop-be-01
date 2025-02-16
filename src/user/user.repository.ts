@@ -1,21 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { User } from 'src/interfaces/models/user';
-import { IUserRepository } from 'src/interfaces/repositories/user.repository.interface';
+import { InjectModel } from '@nestjs/mongoose';
+
+import { IUserRepository } from '@/user/interface/repository/user.repository.interface';
+import { Model } from 'mongoose';
+import { UserEntityMapper } from './adapter/outbound/mapper/user.mapper';
+import { UserEntity } from './adapter/outbound/schema/user.schema';
+import { IUser } from './interface/domain/user.domain';
 
 @Injectable()
 export class UserRepository implements IUserRepository {
-  private users: User[] = [];
+  constructor(
+    @InjectModel(UserEntity.name)
+    private userModel: Model<UserEntity>,
+  ) {}
 
-  // async save(user: User): Promise<User> {
-  //   this.users.push(user);
-  //   return user;
-  // }
+  async saveUser(data: UserEntity): Promise<IUser> {
+    const newUser = new this.userModel(data);
+    await newUser.save();
 
-  // async findAll(): Promise<User[]> {
-  //   return this.users;
-  // }
-
-  async getHello(): Promise<string> {
-    return 'hello';
+    const result = UserEntityMapper.mappingToDomain(newUser);
+    return result;
   }
 }

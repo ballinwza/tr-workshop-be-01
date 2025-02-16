@@ -1,30 +1,21 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 
+import { UserSaveReqDto } from './adapter/inbound/dto/user.req.dto';
 import { UserRepository } from './user.repository';
 import { UserService } from './user.service';
 
-@Controller('users')
+@Controller('user')
 export class UserController {
   // private createUserUsecase: GetHelloUsecase;
-  private getHelloUsecase: UserService;
+  private userService: UserService;
 
   constructor(private readonly userRepository: UserRepository) {
-    // this.createUserUsecase = new GetHelloUsecase(userRepository);
-    this.getHelloUsecase = new UserService(this.userRepository);
+    // this.createUserUsecase = new userService(userRepository);
+    this.userService = new UserService(this.userRepository);
   }
 
-  // @Post()
-  // async createUser(@Body() body: { name: string; email: string }) {
-  //   return this.createUserUsecase.execute(body.name, body.email);
-  // }
-
-  // @Get()
-  // async getAllUsers() {
-  //   return this.userRepository.findAll();
-  // }
-
-  @Get()
-  async getHello(): Promise<string> {
-    return await this.getHelloUsecase.execute();
+  @Post('/create')
+  async createUser(@Body() body: UserSaveReqDto) {
+    return await this.userService.save(UserSaveReqDto.toDomain(body));
   }
 }
