@@ -1,7 +1,6 @@
 import { CommunityTypeEnum } from '@/common/enums/communityType.enum';
 import { IPlacard } from '@/placard/interface/domain/placard.domain';
 import { ApiProperty } from '@nestjs/swagger';
-import { Builder } from 'builder-pattern';
 import {
   ArrayMinSize,
   IsArray,
@@ -12,6 +11,14 @@ import {
 } from 'class-validator';
 
 export class PlacardSaveReqDto {
+  @IsString()
+  @IsOptional()
+  @ApiProperty({
+    description: 'Must be objectID but optional',
+    example: '67b1dcf048e7fe2b304f9924',
+  })
+  readonly id?: string;
+
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
@@ -37,7 +44,7 @@ export class PlacardSaveReqDto {
     example: 'history | food | pets | health | fashion | exercise | others',
     default: 'pets',
   })
-  readonly category: CommunityTypeEnum;
+  readonly community: CommunityTypeEnum;
 
   @IsString()
   @IsNotEmpty()
@@ -56,18 +63,20 @@ export class PlacardSaveReqDto {
   readonly description: string;
 
   public static toDomain({
+    id,
     description,
     userId,
     commentId,
-    category,
+    community,
     title,
   }: PlacardSaveReqDto): IPlacard {
-    return Builder(IPlacard)
-      .userId(userId)
-      .commentId(commentId)
-      .community(category)
-      .title(title)
-      .description(description)
-      .build();
+    return {
+      _id: id,
+      description,
+      userId,
+      commentId,
+      community,
+      title,
+    };
   }
 }
