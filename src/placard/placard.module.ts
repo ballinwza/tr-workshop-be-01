@@ -1,8 +1,12 @@
+import {
+  UserEntitySchema,
+  UserSchemaName,
+} from '@/user/adapter/outbound/schema/user.schema';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import {
-  PlacardEntity,
   PlacardEntitySchema,
+  PlacardSchemaName,
 } from './adapter/outbound/schema/placard.schema';
 import { PlacardController } from './placard.controller';
 import { PlacardRepository } from './placard.repository';
@@ -11,7 +15,8 @@ import { PlacardService } from './placard.service';
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: PlacardEntity.name, schema: PlacardEntitySchema },
+      { name: PlacardSchemaName, schema: PlacardEntitySchema },
+      { name: UserSchemaName, schema: UserEntitySchema },
     ]),
   ],
   controllers: [PlacardController],
