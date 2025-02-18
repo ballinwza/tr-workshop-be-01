@@ -13,7 +13,7 @@ export class PlacardEntityMapper {
   }: IPlacard): PlacardEntity {
     return {
       _id,
-      userId: UserEntityMapper.saveUserEntity(userId),
+      userId: UserEntityMapper.saveToEntity(userId),
       commentId,
       community,
       title,
@@ -21,7 +21,7 @@ export class PlacardEntityMapper {
     };
   }
 
-  public static mappingToDomain({
+  public static toDomain({
     _id,
     description,
     userId,
@@ -40,6 +40,6 @@ export class PlacardEntityMapper {
   }
 
   public static mappingListToDomain(entities: PlacardEntity[]): IPlacard[] {
-    return entities.map((entity) => this.mappingToDomain(entity));
+    return entities.map((entity) => this.toDomain(entity));
   }
 }

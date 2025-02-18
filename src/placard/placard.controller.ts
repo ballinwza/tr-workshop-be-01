@@ -41,19 +41,15 @@ export class PlacardController {
     return PlacardResDto.mappingListToDto(await this.placardService.find());
   }
 
-  @Get('/find/:userId')
+  @Get('/find/:id')
   @ApiResponse({
     status: 200,
-    description: 'Found placard list by userId.',
+    description: 'Found placard by id.',
     isArray: true,
     type: PlacardResDto,
   })
-  async placardsByUserId(
-    @Param('userId') userId: string,
-  ): Promise<PlacardResDto[]> {
-    return PlacardResDto.mappingListToDto(
-      await this.placardService.find(userId),
-    );
+  async placardByid(@Param('id') id: string): Promise<PlacardResDto> {
+    return PlacardResDto.toDto(await this.placardService.findById(id));
   }
 
   @Delete('/delete')

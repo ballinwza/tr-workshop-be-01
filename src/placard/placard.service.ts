@@ -6,7 +6,7 @@ export class PlacardService {
   constructor(private readonly placardRepository: IPlacardRepository) {}
 
   async save(data: IPlacard): Promise<{ id: string }> {
-    const afterMapping = PlacardEntityMapper.savePlacardEntity(data);
+    const afterMapping = PlacardEntityMapper.saveDomainToEntity(data);
     return await this.placardRepository.save(afterMapping);
   }
 
@@ -15,6 +15,9 @@ export class PlacardService {
       return await this.placardRepository.getListByUserId(userId);
     }
     return await this.placardRepository.getList();
+  }
+  async findById(placardId: string): Promise<IPlacard> {
+    return await this.placardRepository.getById(placardId);
   }
 
   async delete(id: string): Promise<boolean> {
