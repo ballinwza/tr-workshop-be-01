@@ -1,6 +1,6 @@
 import { IComment } from '@/Comment/interface/domain/Comment.domain';
 import { ApiProperty } from '@nestjs/swagger';
-import { Builder } from 'builder-pattern';
+
 import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CommentSaveReqDto {
@@ -21,6 +21,10 @@ export class CommentSaveReqDto {
   readonly userId: string;
 
   public static toDomain({ description, userId }: CommentSaveReqDto): IComment {
-    return Builder(IComment).description(description).userId(userId).build();
+    return {
+      _id: undefined,
+      description,
+      userId,
+    };
   }
 }

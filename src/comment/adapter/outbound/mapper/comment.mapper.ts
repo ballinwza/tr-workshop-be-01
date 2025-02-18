@@ -1,5 +1,4 @@
 import { IComment } from '@/comment/interface/domain/comment.domain';
-import { Builder } from 'builder-pattern';
 import { CommentEntity } from '../schema/comment.schema';
 
 export class CommentEntityMapper {
@@ -7,10 +6,11 @@ export class CommentEntityMapper {
     description,
     userId,
   }: IComment): CommentEntity {
-    return Builder(CommentEntity)
-      .userId(userId)
-      .description(description)
-      .build();
+    return {
+      _id: undefined,
+      description,
+      userId,
+    };
   }
 
   public static mappingToDomain({
@@ -18,10 +18,10 @@ export class CommentEntityMapper {
     description,
     userId,
   }: CommentEntity): IComment {
-    return Builder(IComment)
-      ._id(_id)
-      .description(description)
-      .userId(userId)
-      .build();
+    return {
+      _id,
+      description,
+      userId,
+    };
   }
 }

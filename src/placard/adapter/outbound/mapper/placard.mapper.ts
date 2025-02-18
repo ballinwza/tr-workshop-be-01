@@ -1,9 +1,9 @@
 import { IPlacard } from '@/placard/interface/domain/placard.domain';
-import { Builder } from 'builder-pattern';
+import { UserEntityMapper } from '@/user/adapter/outbound/mapper/user.mapper';
 import { PlacardEntity } from '../schema/placard.schema';
 
 export class PlacardEntityMapper {
-  public static savePlacardEntity({
+  public static saveDomainToEntity({
     _id,
     description,
     userId,
@@ -11,14 +11,14 @@ export class PlacardEntityMapper {
     community,
     title,
   }: IPlacard): PlacardEntity {
-    return Builder(PlacardEntity)
-      ._id(_id)
-      .userId(userId)
-      .commentId(commentId)
-      .community(community)
-      .title(title)
-      .description(description)
-      .build();
+    return {
+      _id,
+      userId: UserEntityMapper.saveUserEntity(userId),
+      commentId,
+      community,
+      title,
+      description,
+    };
   }
 
   public static mappingToDomain({
@@ -29,14 +29,14 @@ export class PlacardEntityMapper {
     community,
     title,
   }: PlacardEntity): IPlacard {
-    return Builder(IPlacard)
-      ._id(_id)
-      .userId(userId)
-      .commentId(commentId)
-      .community(community)
-      .title(title)
-      .description(description)
-      .build();
+    return {
+      _id,
+      userId,
+      commentId,
+      community,
+      title,
+      description,
+    };
   }
 
   public static mappingListToDomain(entities: PlacardEntity[]): IPlacard[] {

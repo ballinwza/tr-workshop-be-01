@@ -1,3 +1,4 @@
+import { IUser } from '@/user/interface/domain/user.domain';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 
@@ -33,4 +34,18 @@ export class UserResDto {
     example: 'johndoe',
   })
   username: string;
+
+  public static toDto({
+    _id,
+    profileImageUrl,
+    fullName,
+    username,
+  }: IUser): UserResDto {
+    return {
+      id: _id,
+      profileImageUrl,
+      fullName,
+      username,
+    };
+  }
 }
