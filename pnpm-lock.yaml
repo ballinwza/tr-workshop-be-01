@@ -26,9 +26,6 @@ importers:
       '@nestjs/swagger':
         specifier: ^11.0.3
         version: 11.0.3(@nestjs/common@10.4.15(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.15)(class-validator@0.14.1)(reflect-metadata@0.2.2)
-      builder-pattern:
-        specifier: ^2.2.0
-        version: 2.2.0
       class-validator:
         specifier: ^0.14.1
         version: 0.14.1
@@ -986,9 +983,6 @@ packages:
 
   buffer@5.7.1:
     resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
-
-  builder-pattern@2.2.0:
-    resolution: {integrity: sha512-cES3qdeBzA4QyJi7rV/l/kAhIFX6AKo3vK66ZPXLNpjcQWCS8sjLKscly8imlfW2YPTo/hquMRMnaWpZ80Kj+g==}
 
   busboy@1.6.0:
     resolution: {integrity: sha512-8SFQbg/0hQ9xy3UNTB0YEnsNBbWfhf7RtnzpL7TkBiTBRfrQ9Fxcnz7VJsleJpyp6rVLvXiuORqjlHi5q+PYuA==}
@@ -4110,8 +4104,6 @@ snapshots:
     dependencies:
       base64-js: 1.5.1
       ieee754: 1.2.1
-
-  builder-pattern@2.2.0: {}
 
   busboy@1.6.0:
     dependencies:
