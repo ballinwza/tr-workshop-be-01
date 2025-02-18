@@ -1,4 +1,5 @@
 import { CommunityTypeEnum } from '@/common/enums/communityType.enum';
+import { IUser } from '@/user/interface/domain/user.domain';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class IPlacard {
@@ -10,9 +11,9 @@ export class IPlacard {
 
   @ApiProperty({
     description: 'ID of userId',
-    example: 'string',
+    type: IUser,
   })
-  readonly userId: string;
+  readonly userId: IUser;
 
   @ApiProperty({
     description: 'Array ID of commentId',

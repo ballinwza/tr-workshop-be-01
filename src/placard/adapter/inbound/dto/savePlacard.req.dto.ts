@@ -1,5 +1,7 @@
 import { CommunityTypeEnum } from '@/common/enums/communityType.enum';
 import { IPlacard } from '@/placard/interface/domain/placard.domain';
+import { UserSaveReqDto } from '@/user/adapter/inbound/dto/user.req.dto';
+import { IUser } from '@/user/interface/domain/user.domain';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   ArrayMinSize,
@@ -23,9 +25,9 @@ export class PlacardSaveReqDto {
   @IsNotEmpty()
   @ApiProperty({
     description: 'Must be objectID',
-    default: '67b1dcf048e7fe2b304f9924',
+    type: IUser,
   })
-  readonly userId: string;
+  readonly userId: IUser;
 
   @IsArray()
   @IsString({ each: true })
@@ -73,7 +75,7 @@ export class PlacardSaveReqDto {
     return {
       _id: id,
       description,
-      userId,
+      userId: UserSaveReqDto.toDomain(userId),
       commentId,
       community,
       title,
