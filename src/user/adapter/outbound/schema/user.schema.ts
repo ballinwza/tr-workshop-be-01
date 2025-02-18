@@ -13,7 +13,7 @@ export class UserEntity {
   fullName: string;
 
   @Prop({ required: true })
-  email: string;
+  username: string;
 }
 
 export const UserEntitySchema = SchemaFactory.createForClass(UserEntity);

@@ -4,13 +4,16 @@ import { InjectModel } from '@nestjs/mongoose';
 import { IUserRepository } from '@/user/interface/repository/user.repository.interface';
 import { Model } from 'mongoose';
 import { UserEntityMapper } from './adapter/outbound/mapper/user.mapper';
-import { UserEntity } from './adapter/outbound/schema/user.schema';
+import {
+  UserEntity,
+  UserSchemaName,
+} from './adapter/outbound/schema/user.schema';
 import { IUser } from './interface/domain/user.domain';
 
 @Injectable()
 export class UserRepository implements IUserRepository {
   constructor(
-    @InjectModel(UserEntity.name)
+    @InjectModel(UserSchemaName)
     private userModel: Model<UserEntity>,
   ) {}
 
