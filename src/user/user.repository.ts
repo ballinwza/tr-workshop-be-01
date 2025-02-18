@@ -17,11 +17,18 @@ export class UserRepository implements IUserRepository {
     private userModel: Model<UserEntity>,
   ) {}
 
-  async saveUser(data: UserEntity): Promise<IUser> {
+  async save(data: UserEntity): Promise<IUser> {
     const newUser = new this.userModel(data);
     await newUser.save();
 
-    const result = UserEntityMapper.mappingToDomain(newUser);
+    const result = UserEntityMapper.toDomain(newUser);
+    return result;
+  }
+
+  async getByUsername(username: string): Promise<IUser> {
+    const user = await this.userModel.findOne({ username }).lean();
+
+    const result = UserEntityMapper.toDomain(user);
     return result;
   }
 }

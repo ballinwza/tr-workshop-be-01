@@ -7,7 +7,12 @@ export class UserService {
   constructor(private readonly userRepository: IUserRepository) {}
 
   async save(data: IUser): Promise<IUser> {
-    const afterMapping = UserEntityMapper.saveUserEntity(data);
-    return await this.userRepository.saveUser(afterMapping);
+    const afterMapping = UserEntityMapper.saveToEntity(data);
+    return await this.userRepository.save(afterMapping);
+  }
+
+  async getByUsername(username: string): Promise<IUser> {
+    const result = await this.userRepository.getByUsername(username);
+    return UserEntityMapper.toDomain(result);
   }
 }

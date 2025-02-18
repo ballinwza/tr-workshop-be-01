@@ -2,7 +2,7 @@ import { IUser } from '@/user/interface/domain/user.domain';
 import { UserEntity } from '../schema/user.schema';
 
 export class UserEntityMapper {
-  public static saveUserEntity({
+  public static saveToEntity({
     _id,
     profileImageUrl,
     fullName,
@@ -16,7 +16,7 @@ export class UserEntityMapper {
     };
   }
 
-  public static mappingToDomain({
+  public static toDomain({
     _id,
     profileImageUrl,
     fullName,
