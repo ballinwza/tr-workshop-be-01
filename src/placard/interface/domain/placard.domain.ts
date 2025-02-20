@@ -13,7 +13,7 @@ export class IPlacard {
     description: 'ID of userId',
     type: IUser,
   })
-  readonly userId: IUser;
+  readonly userId: string;
 
   @ApiProperty({
     description: 'Array ID of commentId',

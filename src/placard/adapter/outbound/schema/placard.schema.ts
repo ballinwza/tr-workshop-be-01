@@ -1,9 +1,6 @@
 import { CommentSchemaName } from '@/comment/adapter/outbound/schema/comment.schema';
 import { CommunityTypeEnum } from '@/common/enums/communityType.enum';
-import {
-  UserEntity,
-  UserSchemaName,
-} from '@/user/adapter/outbound/schema/user.schema';
+import { UserSchemaName } from '@/user/adapter/outbound/schema/user.schema';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 import { Types } from 'mongoose';
@@ -14,8 +11,8 @@ export const PlacardSchemaName = 'placards';
 export class PlacardEntity {
   _id: string;
 
-  @Prop({ type: Types.ObjectId, required: true, ref: UserSchemaName })
-  userId: UserEntity;
+  @Prop({ type: Types.ObjectId, required: false, ref: UserSchemaName })
+  userId: string;
 
   @Prop({
     type: [Types.ObjectId],
@@ -24,7 +21,7 @@ export class PlacardEntity {
   })
   commentId?: string[];
 
-  @Prop({ required: true, enum: CommunityTypeEnum })
+  @Prop({ required: false, enum: CommunityTypeEnum })
   community: CommunityTypeEnum;
 
   @Prop({ required: true })

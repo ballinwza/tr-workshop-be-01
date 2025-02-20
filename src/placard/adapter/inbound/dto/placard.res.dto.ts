@@ -26,7 +26,7 @@ export class PlacardResDto {
     description: 'Must be objectID',
     type: UserResDto,
   })
-  readonly userId: UserResDto;
+  readonly userId: string;
 
   @IsArray()
   @IsString({ each: true })
@@ -74,7 +74,7 @@ export class PlacardResDto {
     return {
       id: _id,
       description,
-      userId: UserResDto.toDto(userId),
+      userId,
       commentId,
       community,
       title,

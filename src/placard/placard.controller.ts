@@ -1,5 +1,16 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { ApiKeyGuard } from '@/guards/apiKey/apiKey.guard';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Response } from 'express';
 import { PlacardDeleteReqDto } from './adapter/inbound/dto/deletePlacard.req.dto';
 import { PlacardResDto } from './adapter/inbound/dto/placard.res.dto';
 import { PlacardSaveReqDto } from './adapter/inbound/dto/savePlacard.req.dto';
@@ -15,6 +26,7 @@ export class PlacardController {
     this.placardService = new PlacardService(this.placardRepository);
   }
 
+  @UseGuards(ApiKeyGuard)
   @Post('/save')
   @ApiResponse({
     status: 200,
@@ -26,8 +38,13 @@ export class PlacardController {
       },
     },
   })
-  async placardSave(@Body() body: PlacardSaveReqDto): Promise<{ id: string }> {
-    return await this.placardService.save(PlacardSaveReqDto.toDomain(body));
+  async placardSave(
+    @Body() body: PlacardSaveReqDto,
+    @Req() request: Response,
+  ): Promise<{ id: string }> {
+    return await this.placardService.save(
+      PlacardSaveReqDto.toDomain(body, request['id'].id),
+    );
   }
 
   @Get('/find-all')

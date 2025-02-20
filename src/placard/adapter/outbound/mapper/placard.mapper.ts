@@ -1,5 +1,4 @@
 import { IPlacard } from '@/placard/interface/domain/placard.domain';
-import { UserEntityMapper } from '@/user/adapter/outbound/mapper/user.mapper';
 import { PlacardEntity } from '../schema/placard.schema';
 
 export class PlacardEntityMapper {
@@ -13,7 +12,7 @@ export class PlacardEntityMapper {
   }: IPlacard): PlacardEntity {
     return {
       _id,
-      userId: UserEntityMapper.saveToEntity(userId),
+      userId,
       commentId,
       community,
       title,
