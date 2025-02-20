@@ -26,7 +26,7 @@ export class UserRepository implements IUserRepository {
   }
 
   async getByUsername(username: string): Promise<IUser> {
-    const user = await this.userModel.findOne({ username }).lean();
+    const user = await this.userModel.findOne({ _id: username }).lean();
 
     const result = UserEntityMapper.toDomain(user);
     return result;

@@ -28,24 +28,11 @@ export class UserResDto {
   })
   fullName: string;
 
-  @IsString()
-  @ApiProperty({
-    description: 'Must be string',
-    example: 'johndoe',
-  })
-  username: string;
-
-  public static toDto({
-    _id,
-    profileImageUrl,
-    fullName,
-    username,
-  }: IUser): UserResDto {
+  public static toDto({ _id, profileImageUrl, fullName }: IUser): UserResDto {
     return {
       id: _id,
       profileImageUrl,
       fullName,
-      username,
     };
   }
 }

@@ -12,7 +12,7 @@ export class UserEntity {
   @Prop({ required: true })
   fullName: string;
 
-  @Prop({ required: true })
+  @Prop({ required: false })
   username: string;
 }
 
