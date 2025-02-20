@@ -5,7 +5,7 @@ import { CommentRepository } from './comment.repository';
 import { CommentService } from './comment.service';
 import { IComment } from './interface/domain/Comment.domain';
 
-@ApiTags('comment')
+@ApiTags('Comment')
 @Controller('comment')
 export class CommentController {
   private commentService: CommentService;
