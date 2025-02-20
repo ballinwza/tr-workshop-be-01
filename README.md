@@ -1,99 +1,109 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+  <a href="" rel="noopener">
+ <img width=204px height=201px src="https://i.pinimg.com/originals/22/e6/cc/22e6cc48795a2c55e7b8eed39d0c5034.gif" alt="Project logo"></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+<h3 align="center">Tradon Fullstack Workshop</h3>
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+<div align="center">
+
+[![Status](https://img.shields.io/badge/status-active-success.svg)]()
+
+</div>
+
+---
+
+<p align="center"> Poster board web application.
+    <br> 
 </p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+## 📝 Table of Contents
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- [About](#about)
+- [Feature](#getting_started)
+- [Structure](#getting_started)
+- [Deployment](#deployment)
+- [Usage](#usage)
+- [Built Using](#built_using)
+- [Authors](#authors)
+- [Acknowledgments](#acknowledgement)
 
-## Project setup
+## 🧐 About <a name = "about"></a>
 
-```bash
-$ pnpm install
-```
+เว็บสำหรับสร้างกระทู้ และแสดงความคิดเห็น มีระบบสมาชิกอย่างง่ายทำด้วย JWT
+Frontend framework ใช้ NextJs Backend framwork ใช้ NestJs
 
-## Compile and run the project
+## 🏁 Feature <a name = "getting_started"></a>
 
-```bash
-# development
-$ pnpm run start
+- ระบบกระทู้
+  - แสดงผลกระทู้ทั้งหมด
+  - สามารถสร้างกระทู้ได้แต่ต้อง login ก่อนเท่านั้น
+  - สามารถกดที่กระทู้เพื่อเข้าไปดูรายละเอียดด้านใน
+  - <span style="color:#eb9430">สามารถลบกระทู้ได้ (ยังไม่เสร็จ)</span>
+  - <span style="color:#eb9430">สามารถแก้ไขกระทู้ได้ (ยังไม่เสร็จ)</span>
+  - <span style="color:#eb9430">ระบบดูกระทู้ทั้งหมดที่ user สร้างไว้ (ยังไม่เสร็จ)</span>
+- ระบบค้นหา
+  - <span style="color:#eb9430">ค้นหาตามหมวดหมู่ community (ยังไม่เสร็จ)</span>
+  - <span style="color:#eb9430">ค้นหาตามหมวดหมู่ community + keyword (ยังไม่เสร็จ)</span>
+- ระบบสมาชิก
+  - login ได้ด้วย username ที่ผมต้อง generate ให้
+  - <span style="color:#A0C878">logout สามารถ logout ได้ (เพิ่มเข้ามา)</span>
+  - มีการเก็บ cookie ต้องเปิด cookie consent ของ browser ก่อนใช้งาน หรือเข้า icognito mode
+- รองรับ responsive design ที่ 768px
+- <span style="color:#eb9430">ระบบแสดงความคิดเห็น (ยังไม่เสร็จ)</span>
 
-# watch mode
-$ pnpm run start:dev
+## 🥊 Structure
 
-# production mode
-$ pnpm run start:prod
-```
+- FrontEnd / ใช้เป็น hexagonal architecture
+  - แบ่งส่วนที่เป็น business model กับ external ออกจากกันอย่างชัดเจน <br/>
+    <span style="color:#A0C878">ข้อดี - คือสามารถเปลี่ยน external ได้โดยไม่ต้องแก้ไข model หลักเลย เช่น ถ้าต้องเปลี่ยนไปใช้ SQL สิ่งที่ต้องทำมีแค่ repository ที่ต้องเชื่อมต่อกับ SQL นอกนั้นยังใช้งานได้เหมือนเดิม</span> <br/>
+    <span style="color:#eb9430">ข้อเสีย - ต้องร่ายรำโครงสร้างเยอะ ใช้เวลานานกว่าจะได้ feature แต่ละตัว ที่จริงไม่เหมาะกับโปรเจ็คขนาดเล็ก</span>
+- BackEnd / ใช้เป็น Modular architecture
+  - แบ่งระบบออกเป็นชั้นทำให้ง่ายต่อการดูแล ปรับปรุง ต่อเติม และแบ่งหน้าที่การทำงานชัดเจน แต่ผม modify เพิ่มไปนิดหน่อยในส่วน abstractor กับ repositoty อยากให้มันมีหน้าที่ชัดเจน และลดข้อผิดพลาดในการเรียกใช้ service <br/>
+    <span style="color:#A0C878">ข้อดีที่เลือก - Nest ใข้ architecture นี้อยู่แล้วทำให้สานต่อได้ง่าย ไม่ต้องเสียเวลารำเยอะ แต่ละ module ทำงานแยกออกจากกันโดยอิสระ ทำให้เวลาแก้ไข module นึงจะไม่กระทบกับ module อื่น </span> <br/>
+    <span style="color:#eb9430">ข้อเสีย - โครงสร้างซับซ้อน mentenance ค่อนข้างยาก ถ้าไม่วาง structure ให้ดีตั้งแต่แรก เช่นรูปแบบการ return การ handle error interface ให้ดีจะพันกันยุ่งปวดหัวมาก น่าจะใช้ MVC ดีกว่า</span>
 
-## Run tests
+## 🔧 Deployment <a name = "deployment"></a>
 
-```bash
-# unit tests
-$ pnpm run test
+- Frontend
+  - Domain https://tr-workshop-fe-02.vercel.app
+  - Repository https://github.com/ballinwza/tr-workshop-fe-02
+- Backend
+  - Domain https://tr-workshop-be-01.onrender.com
+  - Repository https://github.com/ballinwza/tr-workshop-be-01
+-
 
-# e2e tests
-$ pnpm run test:e2e
+## 🎈 Usage <a name="usage"></a>
 
-# test coverage
-$ pnpm run test:cov
-```
+- สามารถเข้าไปทดสอบที่ [Click ตรงนี้](https://tr-workshop-fe-02.vercel.app) ได้เลย username ที่ใช้จะแนบไปให้ใน email
 
-## Deployment
+## ⛏️ Built Using <a name = "built_using"></a>
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+- [MongoDB](https://www.mongodb.com/) - Database
+- [Mongoose](https://mongoosejs.com/) - ODM Library
+- [NestJs](https://docs.nestjs.com/) - Server Framework
+- [NextJs](https://nextjs.org/) - Web Framework
+- [NodeJs](https://nodejs.org/en/) - Server Environment
+- [Swagger](https://swagger.io/) - Generator Api document
+- [AntD](https://ant.design/) - UI library
+- [EmotionCss](https://emotion.sh/docs/install) - Styler CSS-in-Js for runtime css like animaiton
+- [HeadlessUI](https://headlessui.com/) - UI library for complex customize component
+- [TailwindCss](https://tailwindcss.com/) - Css styler in class
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+- Utils Library
+  - prettier / จัดการ code ให้เป็นระเบียบ
+  - husky / ใช้ run CI command ก่อน push เข้า Git
+  - bcryptjs / สำหรับ encode และตรวจสอบการเข้ารหัส
+  - class-validator / ตรวจสอบ type
+  - cookie-parser / ตัวแปลง cookie จาก http ให้อยู่ในรูป object
+  - zustand / state managment
 
-```bash
-$ pnpm install -g mau
-$ mau deploy
-```
+## ✍️ Authors <a name = "authors"></a>
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+- [Ball](https://github.com/ballinwza) - More Information about me
 
-## Resources
+## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 
-Check out a few resources that may come in handy when working with NestJS:
+- ยังมีอีกหลาย feature ที่ยังทำไม่เสร็จ รวมทั้งยังไม่ได้เขียน test case, docker เพราะเวลาไม่พอ
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- ถ้าเป็นไปได้อยากขอโอกาสทำ feature ที่เหลือให้ครบแล้วค่อยตรวจอีกรอบ เพราะทำแล้วสนุกดีอยากท้าทายตัวเอง อยากทำให้สำเร็จ
