@@ -3,7 +3,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CommentSaveReqDto } from './adapter/inbound/dto/comment.req.dto';
 import { CommentRepository } from './comment.repository';
 import { CommentService } from './comment.service';
-import { IComment } from './interface/domain/Comment.domain';
+import { IComment } from './interface/domain/comment.domain';
 
 @ApiTags('Comment')
 @Controller('comment')

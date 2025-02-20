@@ -1,4 +1,4 @@
-import { IComment } from '@/Comment/interface/domain/Comment.domain';
+import { IComment } from '@/Comment/interface/domain/comment.domain';
 import { ApiProperty } from '@nestjs/swagger';
 
 import { IsNotEmpty, IsString } from 'class-validator';
