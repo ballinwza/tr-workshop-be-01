@@ -1,4 +1,4 @@
-import { IUser } from '@/user/interface/domain/user.domain';
+import { IUser } from '@/user/interface/user.interface';
 import { UserEntity } from '../schema/user.schema';
 
 export class UserEntityMapper {

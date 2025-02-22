@@ -1,4 +1,4 @@
-import { IUser } from '@/user/interface/domain/user.domain';
+import { IUser } from '@/user/interface/user.interface';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
