@@ -8,6 +8,7 @@ import mongooseConfig from './common/configs/mongoose.config';
 import { ConfigName } from './common/enums/configName.enum';
 import { PlacardModule } from './placard/placard.module';
 import { UserModule } from './user/user.module';
+import { GuardModule } from './guard/guard.module';
 
 @Global()
 @Module({
@@ -27,6 +28,7 @@ import { UserModule } from './user/user.module';
     UserModule,
     CommentModule,
     PlacardModule,
+    GuardModule,
   ],
   controllers: [],
   providers: [],
