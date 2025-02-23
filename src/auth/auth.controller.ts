@@ -1,51 +1,47 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Controller, Post, Request, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
+import { ApiKeyGuard } from '../guard/apiKey/apiKey.guard';
+import { LocalAuthGuard } from '../guard/auth/localAuth.guard';
 import { AuthService } from './auth.service';
 
+@UseGuards(ApiKeyGuard)
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private authService: AuthService) {}
 
-  @Post('login')
-  async login(
-    @Body('username') username: string,
-    @Res({ passthrough: true }) response: Response,
-  ) {
-    const jwt = await this.authService.login(username);
-
-    response.cookie('jwt', jwt, {
-      httpOnly: true, // ป้องกัน XSS
-      // secure: process.env.NODE_ENV === 'production', // ใช้ Secure Cookie ใน Production
-      secure: true, // ใช้ Secure Cookie ใน Production
-      sameSite: 'none', // ป้องกัน CSRF
-      maxAge: 24 * 60 * 60 * 1000, // อายุ 1 วัน
+  @UseGuards(LocalAuthGuard)
+  @Post('/login')
+  async login(@Request() req, @Res() res: Response) {
+    const accesToken = await this.authService.generateJwtToken(req.user, {
+      secret: process.env.JWT_SECRET,
+      expiresIn: '60m',
     });
 
-    if (jwt !== null) {
-      response.status(200).send({
-        success: true,
-        message: 'Login successful',
-      });
-      return;
-    }
-
-    response.status(500).send({
-      success: false,
-      message: 'Login unsuccessful',
+    res.cookie('access_token', accesToken, {
+      httpOnly: false,
+      secure: true,
+      sameSite: 'none',
+      maxAge: 60 * 60 * 1000, // 60min
     });
-    return;
+
+    res.status(200).send({
+      success: true,
+      statis: 200,
+      message: 'Login successful',
+    });
   }
 
-  @Post('logout')
-  async logout(@Res() response: Response): Promise<Response> {
-    response.clearCookie('jwt', {
-      httpOnly: true,
+  @Post('/logout')
+  async logout(@Request() req, @Res() response: Response) {
+    response.clearCookie('access_token', {
+      httpOnly: false,
       secure: true,
       sameSite: 'none',
       maxAge: 0,
     });
 
-    response.status(200).send({ success: true, message: 'Logout successful' });
-    return;
+    response
+      .status(200)
+      .send({ success: true, status: 200, message: 'Logout successful' });
   }
 }
