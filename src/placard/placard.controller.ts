@@ -1,4 +1,3 @@
-import { ApiKeyGuard } from '@/guards/apiKey/apiKey.guard';
 import {
   Body,
   Controller,
@@ -7,7 +6,6 @@ import {
   Param,
   Post,
   Req,
-  UseGuards,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
@@ -26,7 +24,6 @@ export class PlacardController {
     this.placardService = new PlacardService(this.placardRepository);
   }
 
-  @UseGuards(ApiKeyGuard)
   @Post('/save')
   @ApiResponse({
     status: 200,

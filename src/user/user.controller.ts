@@ -1,37 +1,40 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 
-import { ApiKeyGuard } from '@/guards/apiKey/apiKey.guard';
-import { Request } from 'express';
+import { ApiKeyGuard } from '@/guard/apiKey/apiKey.guard';
+import { JwtAuthGuard } from '@/guard/jwt/jwt.guard';
+import { IJwtPayload } from '@/guard/jwt/jwt.payload.interface';
 import { UserSaveReqDto } from './adapter/inbound/dto/user.req.dto';
 import { UserResDto } from './adapter/inbound/dto/user.res.dto';
-import { UserRepository } from './user.repository';
 import { UserService } from './user.service';
+
 @UseGuards(ApiKeyGuard)
 @Controller('user')
 export class UserController {
-  private userService: UserService;
-
-  constructor(private readonly userRepository: UserRepository) {
-    this.userService = new UserService(this.userRepository);
-  }
+  constructor(private readonly userService: UserService) {}
 
   @Post('/save')
-  async userSave(@Body() body: UserSaveReqDto): Promise<UserResDto> {
-    const result = UserResDto.toDto(
-      await this.userService.save(UserSaveReqDto.toDomain(body)),
-    );
-    return result;
+  async userSave(@Body() body: UserSaveReqDto): Promise<boolean | undefined> {
+    return await this.userService.save(UserSaveReqDto.toDomain(body));
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('/find')
-  async user(@Req() request: Request): Promise<UserResDto | null> {
-    if (request['id'].id !== undefined) {
-      const result = UserResDto.toDto(
-        await this.userService.getByUsername(request['id'].id),
-      );
+  async user(@Request() req): Promise<UserResDto> {
+    const payload: IJwtPayload = req.user;
+
+    const result = UserResDto.toDto(await this.userService.getById(payload.id));
+
+    if (result) {
       return result;
     }
 
-    return null;
+    return;
   }
 }

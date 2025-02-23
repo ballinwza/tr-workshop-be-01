@@ -7,8 +7,10 @@ import { GlobalExceptionFilter } from './common/utils/mongoException';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const { frontendWebDomainProd, frontendWebDomainDev } = configEnv();
-  app.use(cookieParser());
+  const { frontendWebDomainProd, frontendWebDomainDev, jwtSecret } =
+    configEnv();
+
+  app.use(cookieParser(jwtSecret));
   app.useGlobalFilters(new GlobalExceptionFilter());
   app.enableCors({
     origin: [frontendWebDomainProd, frontendWebDomainDev],
