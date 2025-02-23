@@ -26,7 +26,7 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/find')
-  async user(@Request() req): Promise<UserResDto | undefined> {
+  async user(@Request() req): Promise<UserResDto> {
     const payload: IJwtPayload = req.user;
 
     const result = UserResDto.toDto(await this.userService.getById(payload.id));
@@ -35,6 +35,6 @@ export class UserController {
       return result;
     }
 
-    return undefined;
+    return;
   }
 }
