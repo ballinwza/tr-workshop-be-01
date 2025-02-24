@@ -11,7 +11,11 @@ export const PlacardSchemaName = 'placards';
 export class PlacardEntity {
   _id: string;
 
-  @Prop({ type: Types.ObjectId, required: false, ref: UserSchemaName })
+  @Prop({
+    type: Types.ObjectId,
+    required: false,
+    ref: UserSchemaName,
+  })
   userId: string;
 
   @Prop({

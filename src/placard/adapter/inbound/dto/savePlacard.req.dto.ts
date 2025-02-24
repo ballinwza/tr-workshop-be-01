@@ -25,6 +25,13 @@ export class PlacardSaveReqDto {
   @IsNotEmpty()
   @ApiProperty({
     description: 'Must be string',
+  })
+  readonly userId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    description: 'Must be string',
     default: 'Title of post card.',
   })
   readonly title: string;
@@ -37,11 +44,11 @@ export class PlacardSaveReqDto {
   })
   readonly description: string;
 
-  public static toDomain(dto: PlacardSaveReqDto, userId: string): IPlacard {
+  public static toDomain(dto: PlacardSaveReqDto): IPlacard {
     return {
-      _id: dto.id === '' ? undefined : dto.id,
+      _id: undefined,
       description: dto.description,
-      userId: userId,
+      userId: dto.userId,
       commentId: undefined,
       community: dto.community,
       title: dto.title,
