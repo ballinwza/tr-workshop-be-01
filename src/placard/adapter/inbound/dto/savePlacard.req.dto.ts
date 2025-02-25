@@ -49,7 +49,6 @@ export class PlacardSaveReqDto {
       _id: undefined,
       description: dto.description,
       userId: dto.userId,
-      commentId: undefined,
       community: dto.community,
       title: dto.title,
     };

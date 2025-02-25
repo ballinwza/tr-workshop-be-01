@@ -6,14 +6,12 @@ export class PlacardEntityMapper {
     _id,
     description,
     userId,
-    commentId,
     community,
     title,
   }: IPlacard): PlacardEntity {
     return {
       _id,
       userId,
-      commentId,
       community,
       title,
       description,
@@ -24,14 +22,12 @@ export class PlacardEntityMapper {
     _id,
     description,
     userId,
-    commentId,
     community,
     title,
   }: PlacardEntity): IPlacard {
     return {
       _id,
       userId,
-      commentId,
       community,
       title,
       description,
