@@ -4,7 +4,7 @@ import {
   PlacardEntity,
   PlacardSchemaName,
 } from './adapter/outbound/schema/placard.schema';
-import { IPlacard } from './interface/domain/placard.domain';
+import { IPlacard } from './interface/placard.interface';
 
 export class PlacardService {
   constructor(

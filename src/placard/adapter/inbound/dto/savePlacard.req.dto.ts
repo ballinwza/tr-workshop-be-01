@@ -1,5 +1,5 @@
 import { CommunityTypeEnum } from '@/common/enums/communityType.enum';
-import { IPlacard } from '@/placard/interface/domain/placard.domain';
+import { IPlacard } from '@/placard/interface/placard.interface';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 

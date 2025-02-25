@@ -1,4 +1,4 @@
-import { IPlacard } from '@/placard/interface/domain/placard.domain';
+import { IPlacard } from '@/placard/interface/placard.interface';
 import { PlacardEntity } from '../schema/placard.schema';
 
 export class PlacardEntityMapper {

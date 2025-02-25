@@ -1,5 +1,5 @@
 import { CommunityTypeEnum } from '@/common/enums/communityType.enum';
-import { IPlacard } from '@/placard/interface/domain/placard.domain';
+import { IPlacard } from '@/placard/interface/placard.interface';
 import { UserResDto } from '@/user/adapter/inbound/dto/user.res.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import {
