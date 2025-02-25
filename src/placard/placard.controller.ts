@@ -5,25 +5,24 @@ import {
   Get,
   Param,
   Post,
-  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Response } from 'express';
 import { PlacardDeleteReqDto } from './adapter/inbound/dto/deletePlacard.req.dto';
 import { PlacardResDto } from './adapter/inbound/dto/placard.res.dto';
 import { PlacardSaveReqDto } from './adapter/inbound/dto/savePlacard.req.dto';
-import { PlacardRepository } from './placard.repository';
+
+import { ApiKeyGuard } from '@/guard/apiKey/apiKey.guard';
+import { JwtAuthGuard } from '@/guard/jwt/jwt.guard';
 import { PlacardService } from './placard.service';
 
+@UseGuards(ApiKeyGuard)
 @ApiTags('Placard')
 @Controller('placard')
 export class PlacardController {
-  private placardService: PlacardService;
+  constructor(private readonly placardService: PlacardService) {}
 
-  constructor(private readonly placardRepository: PlacardRepository) {
-    this.placardService = new PlacardService(this.placardRepository);
-  }
-
+  @UseGuards(JwtAuthGuard)
   @Post('/save')
   @ApiResponse({
     status: 200,
@@ -35,16 +34,25 @@ export class PlacardController {
       },
     },
   })
-  async placardSave(
-    @Body() body: PlacardSaveReqDto,
-    @Req() request: Response,
-  ): Promise<{ id: string }> {
-    return await this.placardService.save(
-      PlacardSaveReqDto.toDomain(body, request['id'].id),
-    );
+  async placardSave(@Body() body: PlacardSaveReqDto): Promise<{ id: string }> {
+    return await this.placardService.save(PlacardSaveReqDto.toDomain(body));
   }
 
-  @Get('/find-all')
+  @UseGuards(JwtAuthGuard)
+  @Get('/find/list/:id')
+  @ApiResponse({
+    status: 200,
+    description: 'Found placard list.',
+    isArray: true,
+    type: PlacardResDto,
+  })
+  async placardsByUserId(@Param('id') id: string): Promise<PlacardResDto[]> {
+    const result = await this.placardService.findListByUserId(id);
+    console.log(result);
+    return PlacardResDto.mappingListToDto(result);
+  }
+
+  @Get('/find/list')
   @ApiResponse({
     status: 200,
     description: 'Found placard list.',
@@ -52,7 +60,7 @@ export class PlacardController {
     type: PlacardResDto,
   })
   async placards(): Promise<PlacardResDto[]> {
-    return PlacardResDto.mappingListToDto(await this.placardService.find());
+    return PlacardResDto.mappingListToDto(await this.placardService.findList());
   }
 
   @Get('/find/:id')
@@ -66,6 +74,7 @@ export class PlacardController {
     return PlacardResDto.toDto(await this.placardService.findById(id));
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete('/delete')
   @ApiResponse({
     status: 200,

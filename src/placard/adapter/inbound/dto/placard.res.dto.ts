@@ -1,15 +1,8 @@
 import { CommunityTypeEnum } from '@/common/enums/communityType.enum';
-import { IPlacard } from '@/placard/interface/domain/placard.domain';
+import { IPlacard } from '@/placard/interface/placard.interface';
 import { UserResDto } from '@/user/adapter/inbound/dto/user.res.dto';
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  ArrayMinSize,
-  IsArray,
-  IsEnum,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class PlacardResDto {
   @IsString()
@@ -27,16 +20,6 @@ export class PlacardResDto {
     type: UserResDto,
   })
   readonly userId: string;
-
-  @IsArray()
-  @IsString({ each: true })
-  @ArrayMinSize(0)
-  @IsOptional()
-  @ApiProperty({
-    description: 'Must be objectID but optional',
-    default: ['67b1dcf048e7fe2b304f9924'],
-  })
-  readonly commentId?: string[];
 
   @IsEnum(CommunityTypeEnum)
   @IsNotEmpty()
@@ -67,7 +50,6 @@ export class PlacardResDto {
     _id,
     description,
     userId,
-    commentId,
     community,
     title,
   }: IPlacard): PlacardResDto {
@@ -75,7 +57,6 @@ export class PlacardResDto {
       id: _id,
       description,
       userId,
-      commentId,
       community,
       title,
     };

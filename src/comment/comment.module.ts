@@ -5,7 +5,6 @@ import {
   CommentEntitySchema,
 } from './adapter/outbound/schema/comment.schema';
 import { CommentController } from './comment.controller';
-import { CommentRepository } from './comment.repository';
 import { CommentService } from './comment.service';
 
 @Module({
@@ -15,7 +14,7 @@ import { CommentService } from './comment.service';
     ]),
   ],
   controllers: [CommentController],
-  providers: [CommentRepository, CommentService],
+  providers: [CommentService],
   exports: [CommentService],
 })
 export class CommentModule {}
