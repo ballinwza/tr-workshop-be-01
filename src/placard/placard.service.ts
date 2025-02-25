@@ -1,26 +1,61 @@
-import { PlacardEntityMapper } from './adapter/outbound/mapper/placard.mapper';
-import { IPlacard } from './interface/domain/placard.domain';
-import { IPlacardRepository } from './interface/repository/placard.repository.interface';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import {
+  PlacardEntity,
+  PlacardSchemaName,
+} from './adapter/outbound/schema/placard.schema';
+import { IPlacard } from './interface/placard.interface';
 
 export class PlacardService {
-  constructor(private readonly placardRepository: IPlacardRepository) {}
+  constructor(
+    @InjectModel(PlacardSchemaName)
+    private placardModel: Model<PlacardEntity>,
+  ) {}
 
   async save(data: IPlacard): Promise<{ id: string }> {
-    const afterMapping = PlacardEntityMapper.saveDomainToEntity(data);
-    return await this.placardRepository.save(afterMapping);
+    const newPlacard = new this.placardModel(data);
+    const result = await newPlacard.updateOne(data, {
+      upsert: true,
+    });
+
+    if (result) {
+      return {
+        id: result.upsertedId ?? data._id,
+      };
+    }
   }
 
-  async find(userId?: string): Promise<IPlacard[]> {
-    if (userId) {
-      return await this.placardRepository.getListByUserId(userId);
-    }
-    return await this.placardRepository.getList();
+  async findList(): Promise<IPlacard[]> {
+    const result = await this.placardModel
+      .find()
+      .populate({
+        path: 'userId',
+      })
+      .lean();
+
+    return result;
   }
-  async findById(placardId: string): Promise<IPlacard> {
-    return await this.placardRepository.getById(placardId);
+
+  async findById(placardId: string): Promise<PlacardEntity> {
+    const result = await this.placardModel.findById(placardId).populate({
+      path: 'userId',
+    });
+
+    return result;
+  }
+
+  async findListByUserId(userId: string): Promise<PlacardEntity[]> {
+    const result = await this.placardModel
+      .find({
+        userId,
+      })
+      .populate({ path: 'userId' });
+
+    return result;
   }
 
   async delete(id: string): Promise<boolean> {
-    return await this.placardRepository.delete(id);
+    const result = await this.placardModel.deleteOne({ _id: id });
+    return result.acknowledged;
   }
 }

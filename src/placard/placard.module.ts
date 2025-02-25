@@ -9,7 +9,6 @@ import {
   PlacardSchemaName,
 } from './adapter/outbound/schema/placard.schema';
 import { PlacardController } from './placard.controller';
-import { PlacardRepository } from './placard.repository';
 import { PlacardService } from './placard.service';
 
 @Module({
@@ -20,7 +19,7 @@ import { PlacardService } from './placard.service';
     ]),
   ],
   controllers: [PlacardController],
-  providers: [PlacardRepository, PlacardService],
+  providers: [PlacardService],
   exports: [PlacardService],
 })
 export class PlacardModule {}

@@ -1,4 +1,4 @@
-import { IPlacard } from '@/placard/interface/domain/placard.domain';
+import { IPlacard } from '@/placard/interface/placard.interface';
 import { PlacardEntity } from '../schema/placard.schema';
 
 export class PlacardEntityMapper {
@@ -6,14 +6,12 @@ export class PlacardEntityMapper {
     _id,
     description,
     userId,
-    commentId,
     community,
     title,
   }: IPlacard): PlacardEntity {
     return {
       _id,
       userId,
-      commentId,
       community,
       title,
       description,
@@ -24,14 +22,12 @@ export class PlacardEntityMapper {
     _id,
     description,
     userId,
-    commentId,
     community,
     title,
   }: PlacardEntity): IPlacard {
     return {
       _id,
       userId,
-      commentId,
       community,
       title,
       description,

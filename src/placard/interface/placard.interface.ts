@@ -16,12 +16,6 @@ export class IPlacard {
   readonly userId: string;
 
   @ApiProperty({
-    description: 'Array ID of commentId',
-    example: 'string[]',
-  })
-  readonly commentId?: string[];
-
-  @ApiProperty({
     description: 'CommunityTypeEnum of community',
     example: 'history | food | pets | health | fashion | exercise | others',
   })
