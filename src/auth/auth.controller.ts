@@ -1,4 +1,5 @@
 import { Controller, Post, Request, Res, UseGuards } from '@nestjs/common';
+import { ApiExcludeController } from '@nestjs/swagger';
 import { Response } from 'express';
 import { ApiKeyGuard } from '../guard/apiKey/apiKey.guard';
 import { LocalAuthGuard } from '../guard/auth/localAuth.guard';
@@ -6,6 +7,7 @@ import { AuthService } from './auth.service';
 
 @UseGuards(ApiKeyGuard)
 @Controller('auth')
+@ApiExcludeController()
 export class AuthController {
   constructor(private authService: AuthService) {}
 
