@@ -7,7 +7,12 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiResponse,
+  ApiSecurity,
+  ApiTags,
+} from '@nestjs/swagger';
 import { PlacardDeleteDto } from './adapter/inbound/dto/placardDelete.dto';
 import { PlacardGetDto } from './adapter/inbound/dto/placardGet.dto';
 import { PlacardSaveDto } from './adapter/inbound/dto/placardSave.dto';
@@ -20,12 +25,14 @@ import { PlacardGetExample } from './adapter/inbound/example/placardGet.example'
 import { PlacardSaveExample } from './adapter/inbound/example/placardSave.example';
 import { PlacardService } from './placard.service';
 
+@ApiSecurity('x-api-key')
 @UseGuards(ApiKeyGuard)
 @ApiTags('Placard')
 @Controller('placard')
 export class PlacardController {
   constructor(private readonly placardService: PlacardService) {}
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post('/save')
   @ApiResponse({
@@ -42,6 +49,7 @@ export class PlacardController {
     return new SuccessResponseDto(mappingToDto, 'Placard was saved');
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post('/update')
   @ApiResponse({
@@ -61,6 +69,7 @@ export class PlacardController {
     }
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get('/find/list/:id')
   @ApiResponse({
@@ -108,6 +117,7 @@ export class PlacardController {
     return new SuccessResponseDto(mappingToDto, 'Found placard by id');
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Delete('/delete')
   @ApiResponse({
