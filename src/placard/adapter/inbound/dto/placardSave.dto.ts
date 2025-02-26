@@ -1,9 +1,9 @@
 import { CommunityTypeEnum } from '@/common/enums/communityType.enum';
-import { IPlacard } from '@/placard/interface/placard.interface';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { PlacardEntity } from '../../outbound/schema/placard.schema';
 
-export class PlacardSaveReqDto {
+export class PlacardSaveDto {
   @IsString()
   @IsOptional()
   @ApiProperty({
@@ -17,7 +17,6 @@ export class PlacardSaveReqDto {
   @ApiProperty({
     description: 'Must be enum of CommunityTypeEnum',
     example: 'history | food | pets | health | fashion | exercise | others',
-    default: 'pets',
   })
   readonly community: CommunityTypeEnum;
 
@@ -25,6 +24,7 @@ export class PlacardSaveReqDto {
   @IsNotEmpty()
   @ApiProperty({
     description: 'Must be string',
+    example: '67b1dcf048e7fe2b304f9924',
   })
   readonly userId: string;
 
@@ -32,7 +32,7 @@ export class PlacardSaveReqDto {
   @IsNotEmpty()
   @ApiProperty({
     description: 'Must be string',
-    default: 'Title of post card.',
+    example: 'Title of card.',
   })
   readonly title: string;
 
@@ -40,17 +40,32 @@ export class PlacardSaveReqDto {
   @IsNotEmpty()
   @ApiProperty({
     description: 'Must be string.',
-    default: 'Type some thing for post card description.',
+    example: 'Type some thing for card description.',
   })
   readonly description: string;
 
-  public static toDomain(dto: PlacardSaveReqDto): IPlacard {
+  public static toEntity(dto: PlacardSaveDto): PlacardEntity {
     return {
-      _id: undefined,
+      _id: dto.id ?? undefined,
       description: dto.description,
-      userId: dto.userId,
+      userId: {
+        _id: dto.userId,
+        profileImageUrl: undefined,
+        fullName: undefined,
+        username: undefined,
+      },
       community: dto.community,
       title: dto.title,
+    };
+  }
+
+  public static toDto(entity: PlacardEntity): PlacardSaveDto {
+    return {
+      id: entity._id,
+      description: entity.description,
+      userId: entity.userId._id,
+      community: entity.community,
+      title: entity.title,
     };
   }
 }

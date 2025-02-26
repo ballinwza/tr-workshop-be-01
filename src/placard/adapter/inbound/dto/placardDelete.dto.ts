@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class PlacardDeleteReqDto {
+export class PlacardDeleteDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty({

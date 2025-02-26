@@ -8,12 +8,16 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { PlacardDeleteReqDto } from './adapter/inbound/dto/deletePlacard.req.dto';
-import { PlacardResDto } from './adapter/inbound/dto/placard.res.dto';
-import { PlacardSaveReqDto } from './adapter/inbound/dto/savePlacard.req.dto';
+import { PlacardDeleteDto } from './adapter/inbound/dto/placardDelete.dto';
+import { PlacardGetDto } from './adapter/inbound/dto/placardGet.dto';
+import { PlacardSaveDto } from './adapter/inbound/dto/placardSave.dto';
 
 import { ApiKeyGuard } from '@/guard/apiKey/apiKey.guard';
 import { JwtAuthGuard } from '@/guard/jwt/jwt.guard';
+
+import { SuccessResponseDto } from '@/common/utils/successResponse';
+import { PlacardGetExample } from './adapter/inbound/example/placardGet.example';
+import { PlacardSaveExample } from './adapter/inbound/example/placardSave.example';
 import { PlacardService } from './placard.service';
 
 @UseGuards(ApiKeyGuard)
@@ -27,15 +31,34 @@ export class PlacardController {
   @ApiResponse({
     status: 200,
     description: 'Saved placard.',
-    schema: {
-      type: 'object',
-      properties: {
-        id: { type: 'string' },
-      },
-    },
+    type: PlacardSaveDto,
+    example: new SuccessResponseDto(PlacardSaveExample, 'Placard was saved'),
   })
-  async placardSave(@Body() body: PlacardSaveReqDto): Promise<{ id: string }> {
-    return await this.placardService.save(PlacardSaveReqDto.toDomain(body));
+  async placardSave(
+    @Body() body: PlacardSaveDto,
+  ): Promise<SuccessResponseDto<PlacardSaveDto, string>> {
+    const result = await this.placardService.save(body);
+    const mappingToDto = PlacardSaveDto.toDto(result);
+    return new SuccessResponseDto(mappingToDto, 'Placard was saved');
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/update')
+  @ApiResponse({
+    status: 200,
+    description: 'Update placard.',
+    example: new SuccessResponseDto(true, 'Placard was updated'),
+  })
+  async placardUpdate(
+    @Body() body: PlacardSaveDto,
+  ): Promise<SuccessResponseDto<boolean, string>> {
+    const result = await this.placardService.update(body);
+
+    if (result) {
+      return new SuccessResponseDto(true, 'Placard was updated');
+    } else {
+      throw new Error('Error: Failed to update not found placard Id');
+    }
   }
 
   @UseGuards(JwtAuthGuard)
@@ -44,12 +67,15 @@ export class PlacardController {
     status: 200,
     description: 'Found placard list.',
     isArray: true,
-    type: PlacardResDto,
+    type: [PlacardGetDto],
+    example: new SuccessResponseDto([PlacardGetExample], 'Found placard list'),
   })
-  async placardsByUserId(@Param('id') id: string): Promise<PlacardResDto[]> {
-    const result = await this.placardService.findListByUserId(id);
-    console.log(result);
-    return PlacardResDto.mappingListToDto(result);
+  async placardListByUserId(
+    @Param('id') id: string,
+  ): Promise<SuccessResponseDto<PlacardGetDto[], string>> {
+    const result = await this.placardService.getListByUserId(id);
+    const mappingToDto = PlacardGetDto.listToDto(result);
+    return new SuccessResponseDto(mappingToDto, 'Found placard list');
   }
 
   @Get('/find/list')
@@ -57,31 +83,46 @@ export class PlacardController {
     status: 200,
     description: 'Found placard list.',
     isArray: true,
-    type: PlacardResDto,
+    type: PlacardGetDto,
+    example: new SuccessResponseDto([PlacardGetExample], 'Found placard list'),
   })
-  async placards(): Promise<PlacardResDto[]> {
-    return PlacardResDto.mappingListToDto(await this.placardService.findList());
+  async placardList(): Promise<SuccessResponseDto<PlacardGetDto[], string>> {
+    const result = await this.placardService.getList();
+    const mappingToDto = PlacardGetDto.listToDto(result);
+    return new SuccessResponseDto(mappingToDto, 'Found placard list');
   }
 
-  @Get('/find/:id')
+  @Get('/find/:placardId')
   @ApiResponse({
     status: 200,
     description: 'Found placard by id.',
     isArray: true,
-    type: PlacardResDto,
+    type: PlacardGetDto,
+    example: new SuccessResponseDto(PlacardGetExample, 'Found placard by id'),
   })
-  async placardByid(@Param('id') id: string): Promise<PlacardResDto> {
-    return PlacardResDto.toDto(await this.placardService.findById(id));
+  async placardByid(
+    @Param('placardId') placardId: string,
+  ): Promise<SuccessResponseDto<PlacardGetDto, string>> {
+    const result = await this.placardService.getById(placardId);
+    const mappingToDto = PlacardGetDto.toDto(result);
+    return new SuccessResponseDto(mappingToDto, 'Found placard by id');
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete('/delete')
   @ApiResponse({
     status: 200,
-    description: 'Deleted placard.',
-    type: Boolean,
+    description: 'Delete placard.',
+    example: new SuccessResponseDto(true, 'Placard was deleted'),
   })
-  async placardDeleteById(@Body() body: PlacardDeleteReqDto): Promise<boolean> {
-    return await this.placardService.delete(body.id);
+  async placardDeleteById(
+    @Body() body: PlacardDeleteDto,
+  ): Promise<SuccessResponseDto<boolean, string>> {
+    const result = await this.placardService.delete(body.id);
+    if (result) {
+      return new SuccessResponseDto(true, 'Placard was deleted');
+    } else {
+      throw new Error('Error: Failed to delete not found placard Id');
+    }
   }
 }
