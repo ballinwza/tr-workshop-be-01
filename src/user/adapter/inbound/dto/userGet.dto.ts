@@ -1,13 +1,8 @@
-import { IUser } from '@/user/interface/user.interface';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
+import { UserEntity } from '../../outbound/schema/user.schema';
 
-export class UserSaveResDto {
-  fullName: string;
-  profileImageUrl: string;
-}
-
-export class UserResDto {
+export class UserGetDto {
   @ApiProperty({
     description: 'Must be objectID',
     example: '67b1dcf048e7fe2b304f9924',
@@ -28,11 +23,11 @@ export class UserResDto {
   })
   fullName: string;
 
-  public static toDto({ _id, profileImageUrl, fullName }: IUser): UserResDto {
+  public static toDto(entity: UserEntity): UserGetDto {
     return {
-      id: _id,
-      profileImageUrl,
-      fullName,
+      id: entity._id,
+      profileImageUrl: entity.profileImageUrl,
+      fullName: entity.fullName,
     };
   }
 }
