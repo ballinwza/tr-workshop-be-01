@@ -1,10 +1,10 @@
-export class SuccessResponseDto<T> {
+export class SuccessResponseDto<T, messsage> {
   success: boolean;
-  message: string;
+  message: messsage;
   statusCode: number;
   data: T;
 
-  constructor(data: T, message = 'Success') {
+  constructor(data: T, message: messsage) {
     this.success = true;
     this.statusCode = 200;
     this.message = message;
