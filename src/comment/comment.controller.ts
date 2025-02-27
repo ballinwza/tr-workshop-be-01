@@ -1,15 +1,7 @@
 import { SuccessResponseDto } from '@/common/utils/successResponse';
 import { ApiKeyGuard } from '@/guard/apiKey/apiKey.guard';
 import { JwtAuthGuard } from '@/guard/jwt/jwt.guard';
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiResponse,
@@ -49,7 +41,7 @@ export class CommentController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Delete('/delete')
+  @Post('/delete')
   @ApiResponse({
     status: 200,
     description: 'Delete comment.',

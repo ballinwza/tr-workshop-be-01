@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiResponse,
@@ -119,7 +111,7 @@ export class PlacardController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Delete('/delete')
+  @Post('/delete')
   @ApiResponse({
     status: 200,
     description: 'Delete placard.',
