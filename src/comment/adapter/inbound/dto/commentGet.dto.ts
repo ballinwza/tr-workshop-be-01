@@ -1,5 +1,5 @@
-import { PlacardResDto } from '@/placard/adapter/inbound/dto/placard.res.dto';
-import { UserResDto } from '@/user/adapter/inbound/dto/user.res.dto';
+import { PlacardGetDto } from '@/placard/adapter/inbound/dto/placardGet.dto';
+import { UserGetDto } from '@/user/adapter/inbound/dto/userGet.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
 import { IsNotEmpty, IsString } from 'class-validator';
@@ -26,17 +26,17 @@ export class CommentGetDto {
   @IsNotEmpty()
   @ApiProperty({
     description: 'User detail',
-    type: UserResDto,
+    type: UserGetDto,
   })
-  readonly user: UserResDto;
+  readonly user: UserGetDto;
 
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
     description: 'Placard detail',
-    type: PlacardResDto,
+    type: PlacardGetDto,
   })
-  readonly placard: PlacardResDto;
+  readonly placard: PlacardGetDto;
 
   public static toDtoList(entities: CommentEntity[]): CommentGetDto[] {
     return entities.map((entity) => this.toDto(entity));
@@ -46,8 +46,8 @@ export class CommentGetDto {
     return {
       id: entity._id,
       description: entity.description,
-      placard: PlacardResDto.toDto(entity.placardId),
-      user: UserResDto.toDto(entity.userId),
+      placard: PlacardGetDto.toDto(entity.placardId),
+      user: UserGetDto.toDto(entity.userId),
     };
   }
 }

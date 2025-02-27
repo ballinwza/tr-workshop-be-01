@@ -47,7 +47,7 @@ export class CommentService {
 
       return false;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(`CommentService.delete Error: ${error}`);
     }
   }
 

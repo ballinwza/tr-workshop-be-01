@@ -1,90 +1,79 @@
+import { SuccessResponseDto } from '@/common/utils/successResponse';
 import { ApiKeyGuard } from '@/guard/apiKey/apiKey.guard';
 import { JwtAuthGuard } from '@/guard/jwt/jwt.guard';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Response } from 'express';
+  ApiBearerAuth,
+  ApiResponse,
+  ApiSecurity,
+  ApiTags,
+} from '@nestjs/swagger';
+import { CommentDeleteDto } from './adapter/inbound/dto/commentDelete.dto';
 import { CommentGetDto } from './adapter/inbound/dto/commentGet.dto';
 import { CommentSaveDto } from './adapter/inbound/dto/commentSave.dto';
 import { CommentUpdateDto } from './adapter/inbound/dto/commentUpdate.dto';
+import { CommentGetExample } from './adapter/inbound/example/commentGet.example';
+import { CommentSaveExample } from './adapter/inbound/example/commentSave.example';
 import { CommentService } from './comment.service';
 
+@ApiSecurity('x-api-key')
 @UseGuards(ApiKeyGuard)
 @ApiTags('Comment')
 @Controller('comment')
 export class CommentController {
-  constructor(private commentService: CommentService) {}
+  constructor(private readonly commentService: CommentService) {}
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post('/save')
   @ApiResponse({
     status: 200,
     description: 'Create comment.',
-    type: CommentSaveDto,
+    example: new SuccessResponseDto(CommentSaveExample, 'Comment was created'),
   })
-  async createComment(@Body() body: CommentSaveDto): Promise<CommentSaveDto> {
+  async createComment(
+    @Body() body: CommentSaveDto,
+  ): Promise<SuccessResponseDto<CommentSaveDto, string>> {
     const result = await this.commentService.save(body);
-    return CommentSaveDto.toDto(result);
+    const mapToDto = CommentSaveDto.toDto(result);
+    return new SuccessResponseDto(mapToDto, 'Comment was created');
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Get('/delete/:id')
+  @Post('/delete')
   @ApiResponse({
     status: 200,
     description: 'Delete comment.',
-    example: {
-      success: true,
-      status: 200,
-      message: 'Comment was deleted',
-    },
+    example: new SuccessResponseDto(true, 'Comment was deleted'),
   })
   async deleteComment(
-    @Param('id') id: string,
-    @Res() response: Response,
-  ): Promise<void> {
-    const result = await this.commentService.deleteById(id);
+    @Body() body: CommentDeleteDto,
+  ): Promise<SuccessResponseDto<boolean, string>> {
+    const result = await this.commentService.deleteById(body.id);
 
     if (result) {
-      response.status(200).send({
-        success: result,
-        status: 200,
-        message: 'Comment was deleted',
-      });
+      return new SuccessResponseDto(true, 'Comment was updated');
     } else {
       throw new Error('Error: Failed to delete not found comment Id');
     }
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post('/update')
   @ApiResponse({
     status: 200,
     description: 'Update comment.',
-    example: {
-      success: true,
-      status: 200,
-      message: 'Comment was updated',
-    },
+    example: new SuccessResponseDto(true, 'Comment was updated'),
   })
   async updateComment(
     @Body() body: CommentUpdateDto,
-    @Res() response: Response,
-  ): Promise<void> {
+  ): Promise<SuccessResponseDto<boolean, string>> {
     const result = await this.commentService.update(body);
 
     if (result) {
-      response.status(200).send({
-        success: result,
-        status: 200,
-        message: 'Comment was updated',
-      });
+      return new SuccessResponseDto(true, 'Comment was updated');
     } else {
       throw new Error('Error: Failed to update not found comment Id');
     }
@@ -94,13 +83,14 @@ export class CommentController {
   @ApiResponse({
     status: 200,
     description: 'Found comment.',
-    type: [CommentGetDto],
+    example: new SuccessResponseDto(CommentGetExample, 'Found comment'),
   })
   async commentListByPlacardId(
     @Param('placardId') placardId: string,
-  ): Promise<CommentGetDto[]> {
+  ): Promise<SuccessResponseDto<CommentGetDto[], string>> {
     const result =
       await this.commentService.getCommentListByPlacardId(placardId);
-    return CommentGetDto.toDtoList(result);
+    const mapToDto = CommentGetDto.toDtoList(result);
+    return new SuccessResponseDto(mapToDto, 'Found comment by placard Id');
   }
 }

@@ -1,12 +1,15 @@
 import { CommunityTypeEnum } from '@/common/enums/communityType.enum';
-import { UserSchemaName } from '@/user/adapter/outbound/schema/user.schema';
+import {
+  UserEntity,
+  UserSchemaName,
+} from '@/user/adapter/outbound/schema/user.schema';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 import { Types } from 'mongoose';
 
 export const PlacardSchemaName = 'placards';
 
-@Schema({ timestamps: true, collection: PlacardSchemaName, strict: 'throw' })
+@Schema({ timestamps: true, collection: PlacardSchemaName })
 export class PlacardEntity {
   _id: string;
 
@@ -15,7 +18,7 @@ export class PlacardEntity {
     required: false,
     ref: UserSchemaName,
   })
-  userId: string;
+  userId: UserEntity;
 
   @Prop({ required: false, enum: CommunityTypeEnum })
   community: CommunityTypeEnum;
@@ -28,4 +31,3 @@ export class PlacardEntity {
 }
 
 export const PlacardEntitySchema = SchemaFactory.createForClass(PlacardEntity);
-PlacardEntitySchema.set('strict', 'throw');
