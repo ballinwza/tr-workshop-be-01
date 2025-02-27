@@ -21,6 +21,8 @@ async function bootstrap() {
     .setTitle('Workshop Backend NestJs')
     .setDescription('NestJs REST api created by Tradon')
     .setVersion('1.0')
+    .addApiKey({ type: 'apiKey', name: 'x-api-key', in: 'header' }, 'x-api-key')
+    .addBearerAuth()
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/', app, documentFactory, {

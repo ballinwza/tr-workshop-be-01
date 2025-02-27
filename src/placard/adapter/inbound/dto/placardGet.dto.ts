@@ -1,10 +1,10 @@
 import { CommunityTypeEnum } from '@/common/enums/communityType.enum';
-import { IPlacard } from '@/placard/interface/placard.interface';
-import { UserResDto } from '@/user/adapter/inbound/dto/user.res.dto';
+import { UserGetDto } from '@/user/adapter/inbound/dto/userGet.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { PlacardEntity } from '../../outbound/schema/placard.schema';
 
-export class PlacardResDto {
+export class PlacardGetDto {
   @IsString()
   @IsOptional()
   @ApiProperty({
@@ -16,17 +16,16 @@ export class PlacardResDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
-    description: 'Must be objectID',
-    type: UserResDto,
+    description: 'User detail',
+    type: UserGetDto,
   })
-  readonly userId: string;
+  readonly user: UserGetDto;
 
   @IsEnum(CommunityTypeEnum)
   @IsNotEmpty()
   @ApiProperty({
     description: 'Must be enum of CommunityTypeEnum',
     example: 'history | food | pets | health | fashion | exercise | others',
-    default: 'pets',
   })
   readonly community: CommunityTypeEnum;
 
@@ -34,7 +33,7 @@ export class PlacardResDto {
   @IsNotEmpty()
   @ApiProperty({
     description: 'Must be string',
-    default: 'Title of post card.',
+    example: 'Title of post card.',
   })
   readonly title: string;
 
@@ -42,27 +41,21 @@ export class PlacardResDto {
   @IsNotEmpty()
   @ApiProperty({
     description: 'Must be string.',
-    default: 'Type some thing for post card description.',
+    example: 'Type some thing for post card description.',
   })
   readonly description: string;
 
-  public static toDto({
-    _id,
-    description,
-    userId,
-    community,
-    title,
-  }: IPlacard): PlacardResDto {
+  public static toDto(entity: PlacardEntity): PlacardGetDto {
     return {
-      id: _id,
-      description,
-      userId,
-      community,
-      title,
+      id: entity._id,
+      description: entity.description,
+      user: UserGetDto.toDto(entity.userId),
+      community: entity.community,
+      title: entity.title,
     };
   }
 
-  public static mappingListToDto(entities: IPlacard[]): PlacardResDto[] {
+  public static listToDto(entities: PlacardEntity[]): PlacardGetDto[] {
     return entities.map((entity) => this.toDto(entity));
   }
 }

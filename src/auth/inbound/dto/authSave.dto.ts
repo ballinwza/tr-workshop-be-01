@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class IUser {
+export class AuthSaveDto {
   _id: string;
 
   @ApiProperty({
