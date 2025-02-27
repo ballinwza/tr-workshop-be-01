@@ -1,15 +1,22 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 
 import { SuccessResponseDto } from '@/common/utils/successResponse';
 import { ApiKeyGuard } from '@/guard/apiKey/apiKey.guard';
 import { JwtAuthGuard } from '@/guard/jwt/jwt.guard';
+import { IJwtPayload } from '@/guard/jwt/jwt.payload.interface';
 import {
   ApiBearerAuth,
   ApiResponse,
   ApiSecurity,
   ApiTags,
 } from '@nestjs/swagger';
-import { UserByIdDto } from './adapter/inbound/dto/userById.dto';
 import { UserGetDto } from './adapter/inbound/dto/userGet.dto';
 import { UserSaveDto } from './adapter/inbound/dto/userSave.dto';
 import { UserGetDtoExample } from './adapter/inbound/exmaple/userGet.example';
@@ -45,14 +52,14 @@ export class UserController {
     description: 'Found user.',
     example: new SuccessResponseDto(UserGetDtoExample, 'Found user'),
   })
-  @Post('/find')
-  // async user(@Request() req): Promise<SuccessResponseDto<UserGetDto, string>> {
-  async user(
-    @Body() body: UserByIdDto,
-  ): Promise<SuccessResponseDto<UserGetDto, string>> {
-    // const payload: IJwtPayload = req.user;
-
-    const result = await this.userService.getById(body.id);
+  @Get('/find')
+  async user(@Request() req): Promise<SuccessResponseDto<UserGetDto, string>> {
+    // async user(
+    //   @Body() body: UserByIdDto,
+    // ): Promise<SuccessResponseDto<UserGetDto, string>> {
+    const payload: IJwtPayload = req.user;
+    const result = await this.userService.getById(payload.id);
+    // const result = await this.userService.getById(body.id);
     const mapToDto = UserGetDto.toDto(result);
 
     return new SuccessResponseDto(mapToDto, 'Found user');
