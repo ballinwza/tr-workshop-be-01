@@ -33,8 +33,6 @@ export class AuthController {
       secure: true,
       sameSite: 'none',
       maxAge: 60 * 60 * 1000, // 60min
-      domain: process.env.FRONTEND_WEB_DOMAIN_PROD,
-      path: '/',
     });
 
     res.status(200).send({
